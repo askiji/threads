@@ -7,6 +7,7 @@ public class Cajera {
 
 	
 	public void pasarCompra(Cliente c , int precision) throws InterruptedException{
+		//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
 		int compraParaPasar[] = c.getCompra(); // Le pasa la compra a la cajera
 		long inicial = System.currentTimeMillis();
 		double tiempo=0;
