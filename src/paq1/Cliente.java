@@ -1,11 +1,31 @@
 package paq1;
 
-import java.util.Scanner;
+import java.util.Random;
 
 public class Cliente {
 
-	private int compra[] = new int [6];
+	private int compra[] = new int [4];
+	private static int contador;
+	private int id=0;
 	
+	
+	
+	public int getId() {
+			return this.id;
+		
+	}
+
+
+
+
+
+	public Cliente() {
+		super();
+		contador++;
+		this.id= contador;
+	}
+
+
 	// ***** Getters y Setters
 	
 	public int[] getCompra() {
@@ -21,24 +41,11 @@ public class Cliente {
 	
 	
 	public void realizarCompra() {
-		
-		Scanner scInt = new Scanner(System.in);
-		int unidades=0;
-		
-		for (int i=0; i<6; i++) compra[i]=0; // vaciar la cesta
-		
-		for (int i=0; i<6;i++) {
-		
-			do {
-				System.out.println("Unidades compradas del producto " + (i+1) + "?");
-				unidades= scInt.nextInt();
-				if (unidades==-1) break;
-				
-			}while(unidades<1 || unidades>4);
+		Random r = new Random();
+		for (int i = 0; i < r.nextInt(4)+1 ; i++) {
+				compra[i]=r.nextInt(4)+1;
+//				System.out.println(compra[i]);
 			
-			if (unidades==-1) break;
-			compra[i]=unidades;
-
 		}
 	}
 	
