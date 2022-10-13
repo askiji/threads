@@ -20,6 +20,9 @@ public class Principal {
    			cliente1.realizarCompra();
 			cliente2.realizarCompra();
 			cliente3.realizarCompra();
+			cliente1.imprimirCompra();
+			cliente2.imprimirCompra();
+			cliente3.imprimirCompra();
 			cajera1.setPrecision(precision);
 			cajera1.setC(cliente1);
 			cajera1.pasarCompra();
@@ -38,9 +41,15 @@ public class Principal {
 			cajeraC2.start();
 			cajeraC3.start();
 			
-			
-//			System.out.println("Pasar otra compra (s/n)?");
-			repetir= scLine.nextLine();
+				do {
+					
+					Thread.sleep(1200);
+				} while (cajeraC1.isAlive() || cajeraC2.isAlive() || cajeraC3.isAlive());
+			System.out.println("Tiempo invertido en pasar las 3 compras una cajera : "  + cajera1.getTiempoTodasCompras());
+			System.out.println("Tiempo invertido en pasar las 3 compras 3 cajeras en paralelo : "+ CajeraCC.getTiempoMax());
+			System.out.println("TIEMPO GANADO EN EL SEGUNDO CASO : " +(cajera1.getTiempoTodasCompras()-CajeraCC.getTiempoMax()));
+				System.out.println("Pasar otra compra (s/n)? ");
+				repetir= scLine.nextLine();
 		} while (repetir.equalsIgnoreCase("S"));
 	}
 	

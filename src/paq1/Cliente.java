@@ -8,23 +8,16 @@ public class Cliente {
 	private static int contador;
 	private int id=0;
 	
-	
-	
 	public int getId() {
 			return this.id;
 		
 	}
-
-
-
-
 
 	public Cliente() {
 		super();
 		contador++;
 		this.id= contador;
 	}
-
 
 	// ***** Getters y Setters
 	
@@ -37,8 +30,6 @@ public class Cliente {
 	}
 	
 	//********
-
-	
 	
 	public void realizarCompra() {
 		Random r = new Random();
@@ -48,7 +39,15 @@ public class Cliente {
 			
 		}
 	}
-	
+	public void imprimirCompra(){
+		System.out.println("Compra del cliente " + id);
+		int aux = 1;
+		for (int i : compra) {
+			if (i==0) break;
+			System.out.println("Producto " + (aux++) +" : "+ i +" unidades ");
+		}
+		System.out.println();
+	}
 	
 	
 	

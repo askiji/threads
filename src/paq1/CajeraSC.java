@@ -6,8 +6,17 @@ public class CajeraSC {
 	private Cliente c;
 	private int precision;
 	private static int contador;
+	private long tiempoTodasCompras=0;
 	private int id;
 	
+	public long getTiempoTodasCompras() {
+		return tiempoTodasCompras;
+	}
+
+	public void setTiempoTodasCompras(long tiempoTodasCompras) {
+		this.tiempoTodasCompras = tiempoTodasCompras;
+	}
+
 	public CajeraSC() {
 		super();
 		contador++;
@@ -54,9 +63,10 @@ public class CajeraSC {
 			if(precision==1) {
 				auxScreen = String.format("%.0f", screen);
 			}
-			System.out.println("\nLa cajera" + id +"Acaba de pasar el producto " + (i+1) +" del cliente " + c.getId() +" en el segundo " + auxScreen);
+			System.out.println("\nLa cajera " + id +" acaba de pasar el producto " + (i+1) +" del cliente " + c.getId() +" en el segundo " + auxScreen);
 		}
-		System.out.println("\nLa cajera" + id + " ha tardado " + auxScreen + " segundos en procesar la compra\n");
+		tiempoTodasCompras += screen;
+		System.out.println("\nLa cajera " + id + " ha tardado " + auxScreen + " segundos en procesar la compra\n");
 	};
 	
 	

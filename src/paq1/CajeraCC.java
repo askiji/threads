@@ -5,8 +5,16 @@ public class CajeraCC extends Thread{
 private Cliente c;
 private int precision;
 private static int contador;
-
+private static double tiempoMax = Long.MIN_VALUE;
 private int id=0;
+
+public static double getTiempoMax() {
+	return tiempoMax;
+}
+
+public static void setTiempoMax(double tiempoMax) {
+	CajeraCC.tiempoMax = tiempoMax;
+}
 
 public CajeraCC() {
 	
@@ -14,16 +22,8 @@ public CajeraCC() {
 	contador++;
 	this.id=contador;
 }
-
-
-
-//	@Override
-//	private void run() {
-//		pasarCompra();
-//	}
-
 	
-		@Override
+	@Override
 	public void run() {
 		super.run();
 		try {
@@ -76,6 +76,9 @@ public CajeraCC() {
 				auxScreen = String.format("%.0f", screen);
 			}
 			System.out.println("\nLa cajera " + id +" acaba de pasar el producto " + (i+1) +" del cliente " + c.getId() +" en el segundo " + auxScreen);
+		}
+		if(tiempoMax < screen) {
+			tiempoMax =  screen;
 		}
 		System.out.println("\nLa cajera " + id +" ha tardado " + auxScreen + " segundos en procesar la compra\n");
 	};
