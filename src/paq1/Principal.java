@@ -9,9 +9,9 @@ import com.sun.tools.javac.Main;
 public class Principal {
 	private static int precision;
 	private static ArrayList<Cliente> cola = new ArrayList<>(); 
-	private static CajeraCC cajeraC1 = new CajeraCC();
-	private static CajeraCC cajeraC2 = new CajeraCC();
-	private static CajeraCC cajeraC3 = new CajeraCC();
+	private static CajeraCC cajeraC1 = new CajeraCC(1);
+	private static CajeraCC cajeraC2 = new CajeraCC(2);
+	private static CajeraCC cajeraC3 = new CajeraCC(3);
 	
 	public static void main(String[] args) throws InterruptedException {
 		Scanner scLine = new Scanner(System.in);
@@ -61,30 +61,38 @@ public class Principal {
 	}
 	
 	private static void pasarCompras() throws InterruptedException {
+		int ClienteContador=0;
 		do {
-			System.out.println(cajeraC1.isAlive());
+//			System.out.println(cajeraC1.isAlive());
 
 			if(!cajeraC1.isAlive()) {
 				System.out.println("CCCCCCCCCCCCCCCC");
-				cajeraC1.setC(cola.get(0));
- 
+				cajeraC1 = new CajeraCC(1);
+				cajeraC1.setPrecision(precision);
+				cajeraC1.setC(cola.get(ClienteContador++));
+				cajeraC1.start();
 //				cajeraC1.pasarCompra();
-				cola.remove(1);
+//				cola.remove(0);
 			}
 		
-			if(!cajeraC2.isAlive()) {
-				cajeraC2.setC(cola.get(0));
+			else if(!cajeraC2.isAlive()) {
+				cajeraC2 = new CajeraCC(2);
+				cajeraC2.setPrecision(precision);
+				cajeraC2.setC(cola.get(ClienteContador++));
 				cajeraC2.start();
 //				cajeraC2.pasarCompra();
-				cola.remove(1);
+//				cola.remove(0);
 			}
-			if(!cajeraC3.isAlive()) {
-				cajeraC3.setC(cola.get(0));
+			else if(!cajeraC3.isAlive()) {
+				cajeraC3 = new CajeraCC(3);
+				cajeraC3.setPrecision(precision);
+				cajeraC3.setC(cola.get(ClienteContador++));
 				cajeraC3.start();
+				
 //				cajeraC3.pasarCompra();
-				cola.remove(1);
+//				cola.remove(0);
 			}
-		} while (cajeraC1.isAlive() || cajeraC2.isAlive() || cajeraC3.isAlive());
+		} while (!(ClienteContador == cola.size()));
 		
 	}
 

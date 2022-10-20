@@ -16,11 +16,11 @@ public static void setTiempoMax(double tiempoMax) {
 	CajeraCC.tiempoMax = tiempoMax;
 }
 
-public CajeraCC() {
+public CajeraCC(int id) {
 	
 	super();
 	contador++;
-	this.id=contador;
+	this.id=id;
 }
 	
 	@Override
