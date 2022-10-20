@@ -22,6 +22,7 @@ public class Cliente {
 	// ***** Getters y Setters
 	
 	public int[] getCompra() {
+		
 		return compra;
 	}
 
