@@ -1,28 +1,22 @@
 package paq1;
 
-public class CajeraCC extends Thread{
-	
-private Cliente c;
-private int precision;
-private static int contador;
-private static double tiempoMax = Long.MIN_VALUE;
-private int id=0;
+public class CajeraCC extends Thread {
 
-public static double getTiempoMax() {
-	return tiempoMax;
-}
-
-public static void setTiempoMax(double tiempoMax) {
-	CajeraCC.tiempoMax = tiempoMax;
-}
-
-public CajeraCC(int id) {
+	private Cliente c;
+	private int precision;
+	private static int contador;
+	private static double tiempoMax = Long.MIN_VALUE;
+	private static String[] informe = { "", "", "" };
+	private static double unaCajera = 0;
+	private int id = 0;
 	
-	super();
-	contador++;
-	this.id=id;
-}
-	
+	public CajeraCC(int id) {
+
+		super();
+		contador++;
+		this.id = id;
+	}
+
 	@Override
 	public void run() {
 		super.run();
@@ -32,6 +26,22 @@ public CajeraCC(int id) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
 		}
+	}
+
+	public static String[] getInforme() {
+		return informe;
+	}
+
+	public static void setInforme(String[] informe) {
+		CajeraCC.informe = informe;
+	}
+
+	public static double getTiempoMax() {
+		return tiempoMax;
+	}
+
+	public static void setTiempoMax(double tiempoMax) {
+		CajeraCC.tiempoMax = tiempoMax;
 	}
 
 	public Cliente getC() {
@@ -49,41 +59,55 @@ public CajeraCC(int id) {
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
+	public static double getUnaCajera() {
+		return unaCajera;
+	}
 
-	public void pasarCompra() throws InterruptedException{
-		//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
+	public static void setUnaCajera(double unaCajera) {
+		CajeraCC.unaCajera = unaCajera;
+	}
+
+	public void pasarCompra() throws InterruptedException {
 		int compraParaPasar[] = this.c.getCompra(); // Le pasa la compra a la cajera
-		long inicial = System.currentTimeMillis();
-		double tiempo=0;
-		double tiempoFinal=0;
+		double tiempo = 0;
 		double aux = 0;
-		double screen =0;
-		double cuantoHaPasado=0;
-		String auxScreen="";
-		if (this.precision == 1) aux = 1; 
-		if (this.precision == 2) aux = 10.0;
-		if (this.precision == 3) aux = 100.0;
-		System.out.println("La cajera " + id + " comienza a pasar la compra en el segundo 0.\n");
-		for (int i=0; i<4; i++) {
-			if (compraParaPasar[i]==0) break;
-			for (int j = 0; j < compraParaPasar[i]; j++) {				
-				Thread.sleep(1110);
+		double screen = 0;
+		String auxScreen = "";
+		if (this.precision == 1)
+			aux = 1;
+		if (this.precision == 2)
+			aux = 10.0;
+		if (this.precision == 3)
+			aux = 100.0;
+		for (int i = 0; i < 4; i++) {
+			if (compraParaPasar[i] == 0)
+				break;
+			for (int j = 0; j < compraParaPasar[i]; j++) {
+				tiempo += 1100;
 			}
-			cuantoHaPasado = (System.currentTimeMillis()-inicial);
-			screen = Math.round((cuantoHaPasado/1000)*aux)/aux;
-			auxScreen = Double.toString(screen) ;
-			if(precision==1) {
+			screen = Math.round((tiempo / 1000) * aux) / aux;
+			auxScreen = Double.toString(screen);
+			if (precision == 1) {
 				auxScreen = String.format("%.0f", screen);
 			}
-			System.out.println("\nLa cajera " + id +" acaba de pasar el producto " + (i+1) +" del cliente " + c.getId() +" en el segundo " + auxScreen);
+			System.out.println("\nLa cajera " + id + " acaba de pasar el producto " + (i + 1) + " del cliente "
+					+ c.getId() + " en el segundo " + auxScreen);
 		}
-		if(tiempoMax < screen) {
-			tiempoMax =  screen;
+		if (tiempoMax < screen && id != 99) {
+			tiempoMax = screen;
+			
 		}
-		System.out.println("\nLa cajera " + id +" ha tardado " + auxScreen + " segundos en procesar la compra\n");
-	};
-	
-	
-	
-	
+		if (id == 99) {
+			unaCajera+= screen;
+		}
+		System.out.println("\nLa cajera " + id + " ha tardado " + auxScreen
+				+ " segundos en procesar la compra del cliente " + c.getId());
+		if(id!= 99) {
+			CajeraCC.informe[id - 1] += "Cliente " + c.getId() + ":" + auxScreen + "s\n";
+		}
+
+	}
+
+
+
 }

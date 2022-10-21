@@ -9,90 +9,77 @@ import com.sun.tools.javac.Main;
 public class Principal {
 	private static int precision;
 	private static ArrayList<Cliente> cola = new ArrayList<>(); 
+	private static ArrayList<Cliente> colaPAraUnaSola = new ArrayList<>(); 
 	private static CajeraCC cajeraC1 = new CajeraCC(1);
 	private static CajeraCC cajeraC2 = new CajeraCC(2);
 	private static CajeraCC cajeraC3 = new CajeraCC(3);
-	
-	public static void main(String[] args) throws InterruptedException {
-		Scanner scLine = new Scanner(System.in);
-//		Cliente cliente1 = new Cliente();
-//		Cliente cliente2 = new Cliente();
-//		Cliente cliente3 = new Cliente();
-		String repetir="s";
-		int precision = getPrecision();
-		cajeraC1.setPrecision(precision);
-		cajeraC2.setPrecision(precision);
-		cajeraC3.setPrecision(precision);
-//		cajeraC1.start();
-//		cajeraC2.start();
-//		cajeraC3.start();
 
+	
+	public static void main(String[] args) throws InterruptedException  {
+		Scanner scLine = new Scanner(System.in);
+		String repetir="s";
+		precision = getPrecision();
 		pedirClientes();
 		pasarCompras();
-//		do {
-//   		cliente1.realizarCompra();
-//			cliente2.realizarCompra();
-//			cliente3.realizarCompra();
-//			cliente1.imprimirCompra();
-//			cliente2.imprimirCompra();
-//			cliente3.imprimirCompra();
-//			cajera1.setPrecision(precision);
-//			cajera1.setC(cliente1);
-//			cajera1.pasarCompra();
-//			cajera1.setC(cliente2);
-//			cajera1.pasarCompra();
-//			cajera1.setC(cliente3);
-//			cajera1.pasarCompra();
-//			System.out.println("ahora las 3 cajeras");
-//			cajeraC1.setC(cliente1);
-//			cajeraC2.setC(cliente2);
-//			cajeraC3.setC(cliente3);
-//			
-//				do {
-//					
-//					Thread.sleep(1200);
-//				} while (cajeraC1.isAlive() || cajeraC2.isAlive() || cajeraC3.isAlive());
-//			System.out.println("Tiempo invertido en pasar las 3 compras una cajera : "  + cajera1.getTiempoTodasCompras());
-//			System.out.println("Tiempo invertido en pasar las 3 compras 3 cajeras en paralelo : "+ CajeraCC.getTiempoMax());
-//			System.out.println("TIEMPO GANADO EN EL SEGUNDO CASO : " +(cajera1.getTiempoTodasCompras()-CajeraCC.getTiempoMax()));
-//				System.out.println("Pasar otra compra (s/n)? ");
-//				repetir= scLine.nextLine();
-//		} while (repetir.equalsIgnoreCase("S"));
+		String pause = scLine.nextLine();
+		CajeraCC una = new CajeraCC(99);
+		una.setPrecision(precision);
+		for (Cliente cliente : colaPAraUnaSola) {
+			una.setC(cliente);
+			una.pasarCompra();
+		}
+		System.out.println("Nos hemos ahorrado " + (CajeraCC.getUnaCajera()- CajeraCC.getTiempoMax()));
+		System.out.println("Cajera 1:");
+		System.out.println(CajeraCC.getInforme()[0]);
+		System.out.println("Cajera 2:");
+		System.out.println(CajeraCC.getInforme()[1]);
+		System.out.println("Cajera 3:");
+		System.out.println(CajeraCC.getInforme()[2]);
 	}
 	
 	private static void pasarCompras() throws InterruptedException {
-		int ClienteContador=0;
+		int fixer= cola.size();
 		do {
-//			System.out.println(cajeraC1.isAlive());
-
-			if(!cajeraC1.isAlive()) {
-				System.out.println("CCCCCCCCCCCCCCCC");
-				cajeraC1 = new CajeraCC(1);
-				cajeraC1.setPrecision(precision);
-				cajeraC1.setC(cola.get(ClienteContador++));
-				cajeraC1.start();
-//				cajeraC1.pasarCompra();
-//				cola.remove(0);
-			}
+			do {
+				if (!cajeraC1.isAlive() && cola.size() != 0) {
+					CajeraCC cajeraC1 = new CajeraCC(1);
+					cajeraC1.setPrecision(precision);
+					cajeraC1.setC(cola.get(0));
+					cajeraC1.start();
+					colaPAraUnaSola.add(cola.get(0));
+					cola.remove(0);
+				}
+				if (!cajeraC2.isAlive() && cola.size() != 0) {
+					CajeraCC cajeraC2 = new CajeraCC(2);
+					cajeraC2.setPrecision(precision);
+					cajeraC2.setC(cola.get(0));
+					cajeraC2.start();
+					colaPAraUnaSola.add(cola.get(0));
+					cola.remove(0);
+				}
+				if (!cajeraC3.isAlive() && cola.size() != 0) {
+					CajeraCC cajeraC3 = new CajeraCC(3);
+					cajeraC3.setPrecision(precision);
+					cajeraC3.setC(cola.get(0));
+					cajeraC3.start();
+					colaPAraUnaSola.add(cola.get(0));
+					cola.remove(0);
+				}
+				esperar(20);
+			} while (cola.size() != 0);
+		} while (cajeraC1.isAlive() || cajeraC2.isAlive() || cajeraC3.isAlive());
+		if (cola.size() == 0) {
+			System.out.println("Ya no quedan clientes en la fila única, pulse enter");
+		}
 		
-			else if(!cajeraC2.isAlive()) {
-				cajeraC2 = new CajeraCC(2);
-				cajeraC2.setPrecision(precision);
-				cajeraC2.setC(cola.get(ClienteContador++));
-				cajeraC2.start();
-//				cajeraC2.pasarCompra();
-//				cola.remove(0);
-			}
-			else if(!cajeraC3.isAlive()) {
-				cajeraC3 = new CajeraCC(3);
-				cajeraC3.setPrecision(precision);
-				cajeraC3.setC(cola.get(ClienteContador++));
-				cajeraC3.start();
-				
-//				cajeraC3.pasarCompra();
-//				cola.remove(0);
-			}
-		} while (!(ClienteContador == cola.size()));
+	}
+
+	private static void esperar(int i) {
+		try {
+			Thread.sleep(i);
+		} catch (InterruptedException e) {
+			
+		}
 		
 	}
 
@@ -103,7 +90,6 @@ public class Principal {
 			int aux = sc.nextInt();
 			if(aux>=4 && aux<=8 ) {
 				generarClientes(aux);
-				
 			}
 			else {
 				pedirClientes();
@@ -115,10 +101,7 @@ public class Principal {
 
 	private static void generarClientes(int numeroClietnes) {
 		for (int i = 0; i < numeroClietnes; i++) {
-			System.out.println("asdasd");
 			Cliente aux = new Cliente();
-			
-			System.out.println(aux.toString());
 			aux.realizarCompra();
 			cola.add(aux);
 			cola.get(i).imprimirCompra();
