@@ -1,6 +1,6 @@
 package paq1;
 
-public class CajeraCC extends Thread {
+public class CajeraCC extends Empleado implements Runnable{
 
 	private Cliente c;
 	private int precision;
@@ -10,11 +10,12 @@ public class CajeraCC extends Thread {
 	private static double unaCajera = 0;
 	private int id = 0;
 	
-	public CajeraCC(int id) {
+	public CajeraCC(int id, String nombre, String apellido, String puesto, String dni, String nomEmpleado, int precision1) {
 
-		super();
+		super(nombre, apellido, puesto, dni, nomEmpleado);
 		contador++;
 		this.id = id;
+		this.precision= precision1;
 	}
 
 	@Override
@@ -90,7 +91,7 @@ public class CajeraCC extends Thread {
 			if (precision == 1) {
 				auxScreen = String.format("%.0f", screen);
 			}
-			System.out.println("\nLa cajera " + id + " acaba de pasar el producto " + (i + 1) + " del cliente "
+			System.out.println("\nLa cajera " + super.getNombre() + " acaba de pasar el producto " + (i + 1) + " del cliente "
 					+ c.getId() + " en el segundo " + auxScreen);
 		}
 		if (tiempoMax < screen && id != 99) {
@@ -100,7 +101,7 @@ public class CajeraCC extends Thread {
 		if (id == 99) {
 			unaCajera+= screen;
 		}
-		System.out.println("\nLa cajera " + id + " ha tardado " + auxScreen
+		System.out.println("\nLa cajera " + super.getNombre() + " ha tardado " + auxScreen
 				+ " segundos en procesar la compra del cliente " + c.getId());
 		if(id!= 99) {
 			CajeraCC.informe[id - 1] += "Cliente " + c.getId() + ":" + auxScreen + "s\n";
